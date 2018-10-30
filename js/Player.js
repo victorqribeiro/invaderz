@@ -7,6 +7,7 @@ class Player {
 		this.s = 4;
 		this.color = color || 'black';
 		this.shape = shape || [0,0,0,0,0,1,1,0,0,1,1,0,1,1,1,1];
+		this.speed = 0.05;
 		this.isMovingLeft = false;
 		this.isMovingRight = false;
 		this.isShooting = false;
@@ -23,10 +24,10 @@ class Player {
 	update(){
 	
 		if( this.x > 0 && this.isMovingLeft ){
-			this.x -= 0.01 * dt;
+			this.x -= this.speed * dt;
 		}
 		if( this.x < w/4-this.s && this.isMovingRight ){
-			this.x += 0.01 * dt;
+			this.x += this.speed * dt;
 		}
 
 		if(this.isShooting){
