@@ -8,6 +8,10 @@ If you want to see a live version of it, it's hosted [here](https://victorribeir
 
 You can also add it as an app to your phone, if you wish so.
 
+## How to Play
+
+Left and Right arrow keys move the cannon, space bar shoots; or, if you are on your phone, just use the buttons
+
 ## About
 
 You are the last hope of the human kind as the defense against the InvaderZ. They are deployed by their mothership with the sole purpose of entering earth's atmosphere. Although they are not a danger for you as an individual, if 5 of them gets through, everything is doomed. You can only shoot one projectile at the time, so be mindful, as you are not getting another shot until the last fired projectile disperse into the space or hits a target. Each InvaderZ has a shape that influence how they move. When a InvaderZ dies, they upload their progress to the mothership, so it can generate more InvaderZ like the ones who did well before. After each 7 generations of InvaderZ, the mothership generates a complete new wave of InvaderZ keeping only the very best of the last past 7 generations.
