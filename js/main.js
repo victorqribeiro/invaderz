@@ -118,9 +118,11 @@ function addEvents(){
 					player.shoot();
 				break;
 			case 37 :
+			case 65 :
 					player.isMovingLeft = true;
 				break;
 			case 39 :
+			case 68 :
 					player.isMovingRight = true;
 				break;
 		}
@@ -129,9 +131,11 @@ function addEvents(){
 	document.addEventListener("keyup",function(e){
 		switch(e.keyCode){
 			case 37 :
+			case 65 :
 					player.isMovingLeft = false;
 				break;
 			case 39 :
+			case 68 :
 					player.isMovingRight = false;
 				break;
 		}
