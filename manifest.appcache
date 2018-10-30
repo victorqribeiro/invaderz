@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# 2018-10-30:v1.0
+
+CACHE:
+manifest.json
+favicon.png
+index.html
+css/main.css
+js/main.js
+js/Genetics.js
+js/Invader.js
+js/Player.js
