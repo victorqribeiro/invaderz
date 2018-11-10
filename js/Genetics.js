@@ -97,7 +97,7 @@ class Genetics {
 	elitism(){
 		this.createPopulation();
 		let rand = Math.floor(Math.random() * this.population.length);
-		let invader = new Invader(w/4/2 ,Math.random()*-20, this.bestOfGeneration.shape);
+		let invader = new Invader(w/4/2 ,Math.random()*-20, this.bestOfGeneration.shape.slice());
 		this.population[rand] = invader;
 	}
 	
