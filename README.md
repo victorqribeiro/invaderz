@@ -6,11 +6,17 @@ A game kinda like space invaders, but the invaders evolve with [genetic algorith
 
 If you want to see a live version of it, it's hosted [here](https://victorribeiro.com/invaderz).
 
-You can also add it as an app to your phone, if you wish so.
+You can also add it as an app to your phone (menu / add to home screen), if you wish so.
 
 ## How to Play
 
-Left and Right arrow keys move the cannon, space bar shoots; or, if you are on your phone, just use the buttons
+Left arrow or A keys - move the cannon to the left
+
+Right arrow or D keys - move the cannon to the right
+
+Space bar  - Shoots; 
+
+IF you are on your phone or tablet, use the buttons
 
 ## About
 
