@@ -1,6 +1,6 @@
 # InvaderZ
 
-A game kinda like space invaders, but the invaders evolve with [genetic algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm).
+InvaderZ is like the game Space Invaders, except InvaderZ uses the [genetic algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm) to mutate the invaders as you play.
 
 ![InvaderZ](screenshot.png)
 
