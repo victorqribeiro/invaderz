@@ -23,9 +23,9 @@ rightBtn = document.createElement('button');
 rightBtn.innerText = ">";
 fireBtn = document.createElement('button');
 fireBtn.innerText = "*";
-leftBtn.className = "btn btn-primary";
-rightBtn.className = "btn btn-primary";
-fireBtn.className = "btn btn-primary";
+leftBtn.className = "btn btn-primary c-hand";
+rightBtn.className = "btn btn-primary c-hand";
+fireBtn.className = "btn btn-primary c-hand";
 div = document.createElement('div');
 div.appendChild(leftBtn);
 div.appendChild(fireBtn)
