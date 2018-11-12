@@ -25,4 +25,13 @@ button{
 	font-size: 2em;
 	min-width: 2em;
 	cursor: pointer;
+	border: none;
+	background-color: #008CBA;
+        color: white;
+	padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
