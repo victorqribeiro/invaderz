@@ -23,6 +23,9 @@ rightBtn = document.createElement('button');
 rightBtn.innerText = ">";
 fireBtn = document.createElement('button');
 fireBtn.innerText = "*";
+leftBtn.className = "btn-primary";
+rightBtn.className = "btn-primary";
+fireBtn.className = "btn-primary";
 div = document.createElement('div');
 div.appendChild(leftBtn);
 div.appendChild(fireBtn)
