@@ -17,6 +17,13 @@ canvas = document.createElement('canvas');
 canvas.width = w = 240;
 canvas.height = h = 480;
 c = canvas.getContext('2d',{alpha: false});
+if (window.devicePixelRatio > 1) {
+	c.canvas.width = c.canvas.width * window.devicePixelRatio;
+	c.canvas.height = c.canvas.height * window.devicePixelRatio;
+	c.canvas.style.width = w+'px';
+	c.canvas.style.height = h+'px';
+	c.scale(window.devicePixelRatio, window.devicePixelRatio);
+}
 leftBtn = document.createElement('button');
 leftBtn.innerText = "<";
 rightBtn = document.createElement('button');
