@@ -6,6 +6,10 @@ InvaderZ is like the game Space Invaders, except InvaderZ uses the [genetic algo
 
 If you want to see a live version of it, it's hosted [here](https://victorribeiro.com/invaderz).
 
+
+
+My hosting provider is blocking access from India and Russia due to hacker attacks, so I'm providing an [alternative link](https://victorqribeiro.github.io/invaderz).
+
 You can also add it as an app to your phone (menu / add to home screen), if you wish so.
 
 ## How to Play
