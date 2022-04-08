@@ -1,0 +1,17 @@
+{
+  "name": "InvaderZ",
+  "short_name": "InvaderZ",
+  "description": "Space invaders, but the invaders evolve with genetic algorithm",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "density": 1
+    }
+  ]
+}
