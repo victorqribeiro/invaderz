@@ -16,6 +16,8 @@ let canvas,
 // Flag for signalling game border and score need a redraw
 var refreshGameUI = false;
 
+let hexDigits = "0123456789ABCDEF";
+
 canvas = document.createElement('canvas');
 canvas.id = "canvas";
 // According to MDN docs, there should always be a fallback
@@ -35,6 +37,7 @@ div.appendChild(rightBtn);
 function init(){
 	resizeCanvas();
 	lives = 0;
+	score = 0;
 	generation = 1;
 	dt = 0;
 	lastUpdate = Date.now();
@@ -46,6 +49,16 @@ function init(){
 	player = new Player(w, h);
 	player.finishSetup();
 	update();
+}
+
+function randomColour() {
+	var colour = "#";
+	for (var i = 0; i < 3; i++) {
+		colour += hexDigits.charAt((Math.random() * 14) + 1); // don't let the MSByte be '0', or 'F' so the colour isn't too light or dark
+		colour += hexDigits.charAt(Math.random() * 15);
+	}
+	
+	return colour;
 }
 
 // D.R.Y. function for resizing canvas - called during setup and during live resize
@@ -74,6 +87,8 @@ function drawHUD() {
 	c.fillText("Generation: "+generation, 5, 10);
 	c.fillStyle = "rgb(100, 100, 100)";
 	c.fillText("Invaders: "+lives, 5, 20);
+	c.fillStyle = 'rgb(0, 255, 0)';
+	c.fillText("SCORE: " + player.score, 5, 40);
 }
 
 function deltaTime(){
@@ -83,33 +98,25 @@ function deltaTime(){
 }
 
 function getBestOfGeneration(){
-	let index = 0, bestSpeed = 0, foundAGoodOne = false;
-	for(let i = 0; i < invaders.population.length; i++){
-		
-		// If the invader landed...
-		if (invaders.population[i].fit.landed) {
-			// And it's got a good speed, then it's definitely a good one to store
-			if( invaders.population[i].fit.speed > bestSpeed ){
-				// We'll choose this one for the next generation
-				bestSpeed = invaders.population[i].fit.speed;
-				index = i;
-				foundAGoodOne = true;
-			}
-		}
-		
-	}
+	let bestInvaderIndex = 0;
 	
-	// If we didn't find one that landed check again for furthest fallen
-	var furthestY = 0;
+	// Find furthest fallen
+	var furthestY = -100; // with this value we'll always have a furthest fallen even if it somehow gets shot as soon as generated
 	for (var i = 0; i < invaders.population.length; i++) {
-		if (invaders.population[i].fit.furthestY > furthestY) {
-			bestSpeed = invaders.population[i].fit.speed;
-			index = i;
+		if (invaders.population[i].fitness.furthestY > furthestY) {
+			bestInvaderIndex = i;
+			furthestY = invaders.population[i].fitness.furthestY;
 		}
 	}
 	
-	if( !invaders.bestOfGeneration || invaders.population[index].fit > invaders.bestOfGeneration.fit ) {
-		invaders.bestOfGeneration = invaders.population[index];
+	// If we don't have an older 'best of...' then assign to it the current invader that's progressed the furthest (so this happens on the first level)
+	// If we do have an older 'best of...', then which is faster? That old one or the current invader that's progressed the furthest
+	if( !invaders.bestOfGeneration ) {
+		invaders.bestOfGeneration = invaders.population[bestInvaderIndex];
+	} else {
+		if (invaders.population[bestInvaderIndex].fitness.speed > invaders.bestOfGeneration.fitness.speed) {
+			invaders.bestOfGeneration = invaders.population.slice(bestInvaderIndex, 1)[0];
+		}
 	}
 }
 
@@ -141,13 +148,18 @@ function update(){
 		}
 	}
 	if(allDead){
+		
+		// we can reach here multiple times after killing all the 
 		getBestOfGeneration();
-		if(generation%7){
+		
+		// every 7th generation we should make a whole new 'elite' population
+		if(generation % 7){
 			invaders.evolve();
 		}else{
 			invaders.elitism();
 		}
 		generation++;
+		player.isShooting = false;
 	}
 
 	deltaTime();
@@ -262,6 +274,7 @@ function addEvents(){
 	window.addEventListener('resize', () => {
 		resizeCanvas();
 		player.updateContainerSize(w, h);
+		invaders.updateContainerSize(w, h);
 	})
 
 	if('serviceWorker' in navigator) {

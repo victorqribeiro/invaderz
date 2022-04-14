@@ -15,28 +15,24 @@ class Genetics {
 		this.hexDigits = "0123456789ABCDEF";
 	}
 	
-	randomColour() {
-		var colour = "#";
-		for (var i = 0; i < 3; i++) {
-			colour += this.hexDigits.charAt((Math.random() * 14) + 1); // don't let the MSB be '0', or 'F' so the colour isn't too light or dark
-			colour += this.hexDigits.charAt(Math.random() * 15);
-		}
-		
-		return colour;
-	}
-
+	// Select a random invader to be a parent of this population
 	selectParent(){
 		let total = 0;
-		for(let i = 0; i < this.populationTmp.length; i++){
-			total += this.populationTmp[i].fit;
+		for (let i = 0; i < this.population.length; i++) {
+			total += this.population[i].fitness.furthestY;
 		}
 		let prob = Math.random() * total;
-		for(let i = 0; i < this.populationTmp.length; i++){
-			if( prob < this.populationTmp[i].fit ){
-				return this.populationTmp.splice(i,1)[0];
+		for (let i = 0; i < this.population.length; i++) {
+			// If the random number  < than this invaders furthest progression then return it as a new invader
+			if ( prob < this.population[i].fitness.furthestY ) {
+				// return the 0th element of an entirely new, single element array
+				return this.population[i];
 			}
-			prob -= this.populationTmp[i].fit
+			// increase the probability of returning an invader
+			prob -= this.population[i].fitness.furthestY;
 		}
+		// Make absolutely sure we return something
+		return this.population.splice(Math.random() * this.population.length - 1, 1)[0];
 	}
 	
 	// Update the size of the canvas the sprite is sitting in.
@@ -59,35 +55,50 @@ class Genetics {
 			for(let j = 0; j < this.populationFeaturesSize; j++){
 				shape.push( Math.random() < 0.5 ? 1 : 0 );
 			}
-			this.population.push( new Invader( (Math.random() * 0.8) + 0.1, shape, this.randomColour() ) );
+			this.population.push( new Invader( (Math.random() * 0.8) + 0.1, shape, randomColour() ) );
 			this.population[this.population.length - 1].updateContainerSize(this.containerWidth, this.containerHeight);
 			this.population[this.population.length - 1].finishSetup();
 		}
 	}
 
+	// Returns a new invader with one of the cross overs
 	crossOver(_a,_b){
-		let a,b,x;
+		let a,b;
+		
+		
 		if( Math.random() < 0.5 ){
 			a = _a;
 			b = _b;
-			x = w/4/2;
 		}else{
 			a = _b;
 			b = _a;
-			x = a.x
 		}
-		let child = new Invader( (Math.random() * 0.8) + 0.1, shape, this.randomColour() );
+		
+		// generate a new child
+		let shape = b.shape;	
+		if (Math.random() < 0.5) {
+			shape = a.shape;
+		}
+		let child = new Invader( (Math.random() * 0.8) + 0.1, shape, randomColour() );
+		child.updateContainerSize(this.containerWidth, this.containerHeight);
+		child.finishSetup();
+		
+		// and select the 'genes'
 		let rand = Math.random();
 		if( rand < 0.33 ){
-			for(let i = 0; i < a.shape.length; i+=4){
-				child.shape[i] = b.shape[i];
-				child.shape[i+1] = b.shape[i+1];
+			// take left side of the b invader
+			for(let i = 0; i < a.shape.length; i+=child.shapeStride){
+				for (var c = 0; c < child.shapeStride/2; c++) {
+					child.shape[c] = b.shape[c];
+				}
 			}
 		}else if( rand < 0.66){
+			// take top vertical half of b
 			for(let i = 0; i < a.shape.length/2; i++){
 				child.shape[i] = b.shape[i];
 			}
 		}else{
+			// take odd pixel (aka gene) from a and even from b
 			for(let i = 0; i < a.shape.length; i++){
 				let value;
 				if( i % 2 ){
@@ -113,25 +124,30 @@ class Genetics {
 	}
 	
 	evolve(){
-		let newPopulation = [];
+		this.populationTmp = [];
 		for(let x = 0; x < this.populationSize; x++){
-			this.populationTmp = this.population.slice();
+			
+			// Get two random invaders
 			let a = this.selectParent();
 			let b = this.selectParent();
+			
+			// Create a new invader that's some kind of mix of the two 'parents'
 			let child = this.crossOver(a,b);
+			
+			// This is the 10% mutation
 			if( Math.random() < 0.1 ){
 				child = this.mutate(child);
 			}
-			newPopulation.push( child );
+			this.populationTmp.push(child)
 		}
-		this.population = newPopulation;
+		this.population = this.populationTmp.slice();
 	}
 	
+	// Called every 7th generation to make a completely new population but construct one with the shape of the best invader so far
 	elitism(){
 		this.createPopulation();
 		let rand = Math.floor(Math.random() * this.population.length);
-		let invader = new Invader(w/4/2 ,Math.random()*-20, this.bestOfGeneration.shape.slice());
+		let invader = new Invader( (Math.random() * 0.8) + 0.1, this.bestOfGeneration.shape.slice(), randomColour() );
 		this.population[rand] = invader;
-	}
-	
+	}	
 }

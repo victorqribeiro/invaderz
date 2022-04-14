@@ -35,6 +35,8 @@ class SpriteBase {
 		
 		//In order to accomodate resizing canvas, the x-pos needs to be normalised 0...1
 		this.x = 0.5; // mid position
+		
+		this.explosion;
 	}
 	
 	// There are two iVars that have to be set up after the shape and shapeStride has been set
@@ -52,6 +54,11 @@ class SpriteBase {
 	// return the y position in pixels of this sprite
 	absoluteY() {
 		return this.containerHeight * this.y;
+	}
+	
+	update() {
+		let furthestX = 1.0 - ((this.shapeStride * this.s) / this.containerWidth); // this.containerWidth;
+		this.x = Math.min(Math.max(0, this.x), furthestX); // keep within the normalised param's
 	}
 	
 	// Update the size of the canvas the sprite is sitting in.

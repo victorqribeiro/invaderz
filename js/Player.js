@@ -6,7 +6,8 @@ class Player extends SpriteBase {
 		this.isMovingLeft = false;
 		this.isMovingRight = false;
 		this.isShooting = false;
-		this.bullet = {x: this.x, y: this.y, s: 3};
+		this.bullet = {x: this.x, y: this.y};
+		this.score = 0;
 	}
 	
 	finishSetup() {
@@ -23,15 +24,17 @@ class Player extends SpriteBase {
 	
 	update(){
 		this.absoluteY();
-		if( this.x > 0 && this.isMovingLeft ){
+		if( this.isMovingLeft ){
 			this.x -= this.speed * dt;
 		}
-		if( this.x < (1.0 - (this.width / this.containerWidth)) && this.isMovingRight ){ //with a normalised x-pos we need to check for x < 1.0 - (proportional size of sprite)
+		if( this.isMovingRight ){
 			this.x += this.speed * dt;
 		}
 		
+		super.update();
+		
 		if(this.isShooting){
-			this.bullet.y -= 0.3 * dt;
+			this.bullet.y -= 0.7 * dt;
 			if( this.bullet.y < 0 ){ // has the bullet reached the top of the canvas?
 				this.isShooting = false;
 				this.bullet = {};
